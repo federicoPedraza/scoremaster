@@ -13,7 +13,17 @@ export interface IRepository<T> {
 
 export class FilterQuery<T> {
   query: MongooseFilterQuery<T>;
-  populate?: string | string[];
+  populate?:
+    | {
+        path: string;
+        select?: string | { [key: string]: any };
+        options?: any;
+      }
+    | Array<{
+        path: string;
+        select?: string | { [key: string]: any };
+        options?: any;
+      }>;
   skip?: number;
   limit?: number;
 }
@@ -37,7 +47,18 @@ export abstract class Repository<T> implements IRepository<T> {
   async findAll(filter?: FilterQuery<T>): Promise<T[]> {
     const query = this.model.find(filter?.query);
 
-    if (Boolean(filter?.populate)) query.populate(filter?.populate);
+    if (Boolean(filter.populate)) {
+      if (Array.isArray(filter.populate))
+        for (const field of filter.populate)
+          query.populate(field.path, field.select, field.options);
+      else
+        query.populate(
+          filter.populate.path,
+          filter.populate.select,
+          filter.populate.options,
+        );
+    }
+
     if (Boolean(filter?.limit)) query.limit(filter?.limit);
     if (Boolean(filter?.skip)) query.skip(filter.skip);
 

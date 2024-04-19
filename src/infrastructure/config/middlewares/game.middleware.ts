@@ -10,17 +10,15 @@ export class GameMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const apiKey = req.headers['x-apikey'];
+    const apikey = req.headers['x-apikey'];
 
-    if (apiKey) {
+    if (apikey) {
       const game = await this.gameRepository.findOne({
-        query: { apikey: apiKey },
-        populate: 'scoreboards',
+        query: { apikey },
+        populate: [{ path: 'scoreboards', select: 'name' }],
       });
 
-      if (game) {
-        req['game'] = game;
-      }
+      if (game) req['game'] = game;
     }
 
     next();

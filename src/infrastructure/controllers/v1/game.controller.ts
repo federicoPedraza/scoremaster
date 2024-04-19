@@ -33,7 +33,7 @@ export class GameControllerV1 {
     const game = await this.createGameUseCase.exec(body);
 
     return {
-      message: 'Game registered successful',
+      message: 'Game registered successfully',
       info: game,
       status: HttpStatus.CREATED,
     };
@@ -47,7 +47,7 @@ export class GameControllerV1 {
     const game = await this.getGameDetailsUseCase.exec(req.game);
 
     return {
-      message: 'Game details retrieved successful',
+      message: 'Game details retrieved successfully',
       info: game,
       status: HttpStatus.CREATED,
     };

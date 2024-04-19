@@ -9,8 +9,8 @@ import {
 } from 'src/domain/entities';
 import { PORT } from 'src/application/enums';
 import * as UseCase from 'src/application/use-cases';
-import { GameRepository } from '../repositories';
-import { GameControllerV1 } from '../controllers';
+import { GameRepository, ScoreboardRepository } from '../repositories';
+import { ScoreboardControllerV1 } from '../controllers';
 
 @Module({
   imports: [
@@ -19,12 +19,13 @@ import { GameControllerV1 } from '../controllers';
       { name: Scoreboard.name, schema: ScoreboardSchema },
     ]),
   ],
-  controllers: [GameControllerV1],
+  controllers: [ScoreboardControllerV1],
   providers: [
-    UseCase.CreateGameV1,
-    UseCase.GetGameDetailsV1,
+    UseCase.CreateScoreboardV1,
+    UseCase.GetScoreboardV1,
     { provide: PORT.Game, useClass: GameRepository },
+    { provide: PORT.Scoreboard, useClass: ScoreboardRepository },
   ],
   exports: [],
 })
-export class GameModule {}
+export class ScoreboardModule {}

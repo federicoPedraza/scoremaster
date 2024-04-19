@@ -34,6 +34,7 @@ import {
     }),
     Config.MongoDBModule,
     Modules.GameModule,
+    Modules.ScoreboardModule,
     MongooseModule.forFeature([
       { name: Game.name, schema: GameSchema },
       { name: Scoreboard.name, schema: ScoreboardSchema },
