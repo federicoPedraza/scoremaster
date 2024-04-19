@@ -1,9 +1,19 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import * as Config from 'src/infrastructure/config';
 import * as Modules from 'src/infrastructure/modules';
+import { GameMiddleware } from './infrastructure/config/middlewares';
+import { PORT } from './application/enums';
+import { GameRepository } from './infrastructure/repositories';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  Game,
+  GameSchema,
+  Scoreboard,
+  ScoreboardSchema,
+} from './domain/entities';
 
 @Module({
   imports: [
@@ -24,7 +34,16 @@ import * as Modules from 'src/infrastructure/modules';
     }),
     Config.MongoDBModule,
     Modules.GameModule,
+    MongooseModule.forFeature([
+      { name: Game.name, schema: GameSchema },
+      { name: Scoreboard.name, schema: ScoreboardSchema },
+    ]),
   ],
   controllers: [AppController],
+  providers: [GameMiddleware, { provide: PORT.Game, useClass: GameRepository }],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(GameMiddleware).forRoutes('*');
+  }
+}
