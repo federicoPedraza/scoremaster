@@ -34,7 +34,7 @@ export class GameControllerV1 {
 
     return {
       message: 'Game registered successfully',
-      info: { ...game, warning: 'REMEMBER TO STORE THE APIKEY' },
+      info: game,
       status: HttpStatus.CREATED,
     };
   }

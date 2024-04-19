@@ -26,7 +26,6 @@ export class Game extends Document implements IGame {
   @Prop({
     type: String,
     required: true,
-    unique: true,
   })
   email: string;
 

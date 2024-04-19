@@ -7,7 +7,7 @@ export const swaggerConfig = (app: INestApplication<any>) => {
     .setDescription("Scoremaster's documentation")
     .setVersion('1.0')
     .addTag('Scoremaster')
-    .addApiKey(null, 'x-apikey')
+    .addApiKey()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
