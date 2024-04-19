@@ -13,7 +13,7 @@ export class ScoreboardValue extends Document {
     type: String,
     required: true,
   })
-  name: string;
+  username: string;
 
   @Prop({
     type: String,
