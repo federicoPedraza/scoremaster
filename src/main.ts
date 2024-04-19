@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { swaggerConfig } from './infrastructure/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,8 @@ async function bootstrap() {
 
   const NODE_PORT = configService.get<number>('NODE_PORT');
   const NODE_ENV = configService.get<string>('NODE_ENV');
+
+  swaggerConfig(app);
 
   await app.listen(NODE_PORT, () => {
     Logger.log(`Server in environment: [${NODE_ENV}]`);
